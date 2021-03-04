@@ -41,6 +41,7 @@ fun DarkPreview() {
 @Composable
 fun MyApp(mainViewModel: MainViewModel = viewModel()) {
     val time by mainViewModel.time.observeAsState(0)
+    val isButtonEnabled by mainViewModel.isStartEnabled.observeAsState(true)
 
     Surface(color = MaterialTheme.colors.background) {
         Column(
@@ -54,7 +55,12 @@ fun MyApp(mainViewModel: MainViewModel = viewModel()) {
                 text = "Ready... Set...",
                 fontSize = 20.sp
             )
-            Button(onClick = { /*TODO*/ }) {
+            Button(
+                enabled = isButtonEnabled,
+                onClick = {
+                    mainViewModel.startTimer()
+                }
+            ) {
                 Text(text = "EEl!")
             }
         }
@@ -63,7 +69,7 @@ fun MyApp(mainViewModel: MainViewModel = viewModel()) {
 }
 
 @Composable
-fun TimerComponent(time: Int, onAdd: (Unit) -> Unit, onDecrease: (Unit) -> Unit) {
+fun TimerComponent(time: Long, onAdd: (Unit) -> Unit, onDecrease: (Unit) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
